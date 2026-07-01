@@ -15,6 +15,7 @@ public interface PropertyRepository extends JpaRepository<Property, UUID>, JpaSp
     List<Property> findByLandlordId(UUID landlordId);
     Optional<Property> findByIdAndLandlordId(UUID id, UUID landlordId);
     boolean existsByIdAndLandlordId(UUID id, UUID landlordId);
+    Optional<Property> findByExternalId(String externalId);
     List<Property> findByStatus(PropertyStatus status);
 
     // For advanced filtering with JpaSpecificationExecutor

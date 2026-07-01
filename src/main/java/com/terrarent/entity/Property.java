@@ -42,6 +42,9 @@ public class Property {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
+    @Column(name = "external_id", unique = true, nullable = true)
+    private String externalId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "landlord_id", nullable = false)
     private User landlord;

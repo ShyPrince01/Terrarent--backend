@@ -22,6 +22,18 @@ public class AdminSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
+        // Seed Roles first
+        for (Role.RoleName roleName : Role.RoleName.values()) {
+            if (roleRepository.findByName(roleName).isEmpty()) {
+                Role role = Role.builder()
+                        .name(roleName)
+                        .description("Default description for " + roleName)
+                        .build();
+                roleRepository.save(role);
+                System.out.println("✅ Role " + roleName + " created");
+            }
+        }
+
         String adminEmail = "admin@terrarent.com";
 
         if (userRepository.existsByEmail(adminEmail)) {

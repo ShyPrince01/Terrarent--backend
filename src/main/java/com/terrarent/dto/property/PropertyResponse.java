@@ -21,6 +21,8 @@ import java.util.UUID;
 public class PropertyResponse {
     @Schema(description = "Unique identifier of the property", example = "d1e2f3a4-b5c6-7890-1234-567890abcdef")
     private UUID id;
+    @Schema(description = "Unique identifier of the property if imported from external partner like Booking.com", example = "bookingcom_eko_hotels")
+    private String externalId;
     @Schema(description = "Title of the property listing", example = "Spacious Downtown Apartment")
     private String title;
     @Schema(description = "Detailed description of the property")

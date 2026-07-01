@@ -205,6 +205,7 @@ public class PropertyService {
 
         return PropertyResponse.builder()
                 .id(property.getId())
+                .externalId(property.getExternalId())
                 .title(property.getTitle())
                 .description(property.getDescription())
                 .address(property.getAddress())
