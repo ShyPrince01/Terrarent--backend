@@ -98,7 +98,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(
-            "https://terrarent-backend-bsqc.onrender.com"
+            "http://localhost:3000",
+            "http://localhost:3001",
+            "http://localhost:5173",
+            "https://lodgix.vercel.app"
         )); // Allow frontend origins
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
