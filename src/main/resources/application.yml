@@ -3,9 +3,9 @@ spring:
     name: terrarent
   # Indented correctly under 'spring:'
   datasource:
-      url: jdbc:postgresql://dpg-d8clkb740ujc738ullag-a.virginia-postgres.render.com/terrarent_db
-      username: postgre
-      password: vWpY6NcRv8Yk1kLCkiSHOLmIkjx8rHPJ
+      url: jdbc:postgresql://dpg-d933smlaeets73b2gb00-a.virginia-postgres.render.com:5432/lodgix_db
+      username: lodgix_db_user
+      password: 6fJg2OzywqEXqTFbBCrybTJGjeqYZLDp
       driver-class-name: org.postgresql.Driver
 #  datasource:
 #    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/terrarent_db}
