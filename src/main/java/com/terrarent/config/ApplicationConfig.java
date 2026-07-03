@@ -4,6 +4,7 @@ import com.terrarent.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy; // 1. Added import
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -18,9 +19,10 @@ import com.terrarent.security.TerraRentUserDetails;
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder; // Injected dependency
+    private final PasswordEncoder passwordEncoder; 
 
     @Bean
+    @Lazy // 2. Added @Lazy to break the circular dependency
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
                 .map(TerraRentUserDetails::new)
@@ -31,7 +33,7 @@ public class ApplicationConfig {
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder); // Use the injected field
+        authProvider.setPasswordEncoder(passwordEncoder); 
         return authProvider;
     }
 

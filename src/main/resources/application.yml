@@ -7,6 +7,8 @@ spring:
     password: 6fJg2OzywqEXqTFbBCrybTJGjeqYZLDp
     driver-class-name: org.postgresql.Driver
 
+  allow-circular-references: true
+
   mail:
     host: ${SPRING_MAIL_HOST:smtp.gmail.com}
     port: ${SPRING_MAIL_PORT:587}

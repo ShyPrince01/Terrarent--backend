@@ -9,45 +9,51 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional; // Added for data safety
 
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true) // Optimization: all methods here are reads
 public class UserService {
 
     private final UserRepository userRepository;
 
     public UserResponse getUserById(UUID id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
-        return mapUserToUserResponse(user);
+        return mapUserToUserResponse(getUserEntityById(id));
     }
 
     public UUID getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            String email = ((UserDetails) authentication.getPrincipal()).getUsername();
-            return getUserIdByEmail(email);
+        if (authentication != null && authentication.isAuthenticated() && 
+            !"anonymousUser".equals(authentication.getPrincipal())) {
+            
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails userDetails) {
+                return getUserIdByEmail(userDetails.getUsername());
+            }
         }
         throw new RuntimeException("User not authenticated");
     }
+
     public UUID getUserIdByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Authenticated user not found in database"))
-                .getId();
-    }
-    public UserResponse getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email)
+                .map(User::getId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
-        return mapUserToUserResponse(user);
     }
+
+    public UserResponse getUserByEmail(String email) {
+        return mapUserToUserResponse(userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email)));
+    }
+
     public User getUserEntityById(UUID id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 
-    // Made this method static for easier access from other services
+    // Changed to package-private or public, kept static if needed by Mappers
     public static UserResponse mapUserToUserResponse(User user) {
         return UserResponse.builder()
                 .id(user.getId())
@@ -55,7 +61,7 @@ public class UserService {
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
-                .role(user.getRole().getName())
+                .role(user.getRole() != null ? user.getRole().getName() : null) // Added null check
                 .status(user.getStatus())
                 .build();
     }
