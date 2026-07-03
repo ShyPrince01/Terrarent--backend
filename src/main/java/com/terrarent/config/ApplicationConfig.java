@@ -10,7 +10,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.terrarent.security.TerraRentUserDetails;
 
@@ -19,11 +18,12 @@ import com.terrarent.security.TerraRentUserDetails;
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder; // Injected dependency
 
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
-                .map(TerraRentUserDetails::new) // Wrap our User entity in TerraRentUserDetails
+                .map(TerraRentUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
@@ -31,7 +31,7 @@ public class ApplicationConfig {
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setPasswordEncoder(passwordEncoder); // Use the injected field
         return authProvider;
     }
 
