@@ -3,6 +3,7 @@ package com.terrarent.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy; // ✅ Added Lazy
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,37 +24,33 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableMethodSecurity // Enable @PreAuthorize, @PostAuthorize, @Secured annotations
+@EnableMethodSecurity
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final @Lazy JwtAuthenticationFilter jwtAuthFilter; // ✅ Added @Lazy here
     private final AuthenticationProvider authenticationProvider;
 
-
-@Bean
-public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-}
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS
-                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for stateless API
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers
-                    .frameOptions(frame -> frame.sameOrigin()) // ✅ REQUIRED for H2
+                    .frameOptions(frame -> frame.sameOrigin())
                 )
                 .authorizeHttpRequests(auth -> auth
-
-                       // ✅ H2 Console (DEV ONLY)
-            .requestMatchers("/h2-console/**").permitAll() 
-                        // Public endpoints
+                        .requestMatchers("/h2-console/**").permitAll() 
                         .requestMatchers(
                                 "/api/auth/**",
-                                "/api/properties", // Public property search
-                                "/api/properties/{id}", // Public view single property
-                                "/api/amenities", // Public view amenities
-                                "/api/booking-com/**", // Booking.com API
+                                "/api/properties",
+                                "/api/properties/{id}",
+                                "/api/amenities",
+                                "/api/booking-com/**",
                                 "/v2/api-docs",
                                 "/v3/api-docs",
                                 "/v3/api-docs/**",
@@ -65,17 +62,9 @@ public PasswordEncoder passwordEncoder() {
                                 "/webjars/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-
-                        // Admin specific endpoints
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
-
-                        // Landlord specific endpoints
                         .requestMatchers("/api/landlord/**").hasAnyAuthority("ROLE_LANDLORD", "ROLE_ADMIN")
-
-                        // Renter specific endpoints
                         .requestMatchers("/api/renter/**").hasAnyAuthority("ROLE_RENTER", "ROLE_ADMIN")
-
-                        // General authenticated user endpoints
                         .requestMatchers(
                             "/api/v1/users/**", 
                             "/api/conversations/**",
@@ -83,8 +72,6 @@ public PasswordEncoder passwordEncoder() {
                             "/api/reviews/**",
                             "/api/bookings"
                         ).authenticated()
-
-                        // All other requests require authentication
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
