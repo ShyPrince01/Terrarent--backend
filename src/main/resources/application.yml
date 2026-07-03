@@ -9,8 +9,8 @@ spring:
       driver-class-name: org.postgresql.Driver
 
   mail:
-    host: smtp.gmail.com
-    port: 587
+    host: ${SPRING_MAIL_HOST:smtp.gmail.com}
+    port: ${SPRING_MAIL_PORT:587}
     username: ${SPRING_MAIL_USERNAME}
     password: ${SPRING_MAIL_PASSWORD}
     properties:
@@ -42,6 +42,10 @@ bookingcom:
     base-url: ${BOOKING_COM_BASE_URL:https://demandapi-sandbox.booking.com/3.1}
     affiliate-id: ${BOOKING_COM_AFFILIATE_ID:YOUR_AFFILIATE_ID}
     token: ${BOOKING_COM_TOKEN:YOUR_API_TOKEN}
+
+logging:
+  level:
+    org.springframework.security: DEBUG
 
 server:
   port: 8081

@@ -35,6 +35,11 @@ public class SecurityConfig {
 //        return new BCryptPasswordEncoder();
 //    }
 
+@Bean
+public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+}
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -102,7 +107,7 @@ public class SecurityConfig {
             "http://localhost:3001",
             "http://localhost:5173",
             "https://lodgix.vercel.app"
-        )); // Allow frontend origins
+        )); 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
