@@ -30,11 +30,6 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-
 @Bean
 public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
