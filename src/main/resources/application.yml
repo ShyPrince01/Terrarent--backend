@@ -1,12 +1,11 @@
 spring:
   application:
     name: terrarent
-  # Indented correctly under 'spring:'
   datasource:
-      url: jdbc:postgresql://dpg-d933smlaeets73b2gb00-a.virginia-postgres.render.com:5432/lodgix_db
-      username: lodgix_db_user
-      password: 6fJg2OzywqEXqTFbBCrybTJGjeqYZLDp
-      driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://dpg-d933smlaeets73b2gb00-a.virginia-postgres.render.com:5432/lodgix_db
+    username: lodgix_db_user
+    password: 6fJg2OzywqEXqTFbBCrybTJGjeqYZLDp
+    driver-class-name: org.postgresql.Driver
 
   mail:
     host: ${SPRING_MAIL_HOST:smtp.gmail.com}
@@ -43,16 +42,13 @@ bookingcom:
     affiliate-id: ${BOOKING_COM_AFFILIATE_ID:YOUR_AFFILIATE_ID}
     token: ${BOOKING_COM_TOKEN:YOUR_API_TOKEN}
 
-logging:
-  level:
-    org.springframework.security: DEBUG
-
-server:
-  port: 8081
-
+# Merged logging block
 logging:
   file:
     name: backend.log
   level:
     com.terrarent: DEBUG
-    org.springframework.security: INFO
+    org.springframework.security: DEBUG # Merged from your previous security debug level
+
+server:
+  port: 8081
