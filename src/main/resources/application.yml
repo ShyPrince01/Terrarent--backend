@@ -8,7 +8,7 @@ spring:
     driver-class-name: org.postgresql.Driver
    
   main:
-  allow-circular-references: true
+    allow-circular-references: true
 
   mail:
     host: ${SPRING_MAIL_HOST:smtp.gmail.com}
