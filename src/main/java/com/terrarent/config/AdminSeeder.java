@@ -50,7 +50,7 @@ public class AdminSeeder implements CommandLineRunner {
                 .firstName("Admin")    // ✅ Required
                 .lastName("User")      // ✅ Required
                 .phoneNumber("0000000000") // Optional, if non-nullable
-                .status(User.UserStatus.ACTIVE)      // Optional, if required
+                .status(User.UserStatus.VERIFIED)      // Optional, if required
                 .build();
 
 

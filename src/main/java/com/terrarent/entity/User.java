@@ -58,8 +58,7 @@ public class User {
     // Enum for user status
     public enum UserStatus {
         PENDING_VERIFICATION,
-        ACTIVE,
-        SUSPENDED,
-        VERIFIED
+        VERIFIED,
+        SUSPENDED
     }
 }

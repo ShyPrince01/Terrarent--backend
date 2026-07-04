@@ -28,6 +28,6 @@ public class UserResponse {
     private String phoneNumber;
     @Schema(description = "User's role", example = "ROLE_RENTER", allowableValues = {"ROLE_RENTER", "ROLE_LANDLORD", "ROLE_ADMIN"})
     private Role.RoleName role;
-    @Schema(description = "User's account status", example = "ACTIVE", allowableValues = {"PENDING_VERIFICATION", "ACTIVE", "SUSPENDED", "VERIFIED"})
+    @Schema(description = "User's account status", example = "VERIFIED", allowableValues = {"PENDING_VERIFICATION", "VERIFIED", "SUSPENDED"})
     private User.UserStatus status;
 }

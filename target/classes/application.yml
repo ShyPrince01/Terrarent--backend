@@ -1,27 +1,31 @@
 spring:
   application:
     name: terrarent
-  # Indented correctly under 'spring:'
   datasource:
-      url: jdbc:postgresql://dpg-d8clkb740ujc738ullag-a.virginia-postgres.render.com/terrarent_db
-      username: postgre
-      password: vWpY6NcRv8Yk1kLCkiSHOLmIkjx8rHPJ
-      driver-class-name: org.postgresql.Driver
-#  datasource:
-#    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/terrarent_db}
-#    username: ${SPRING_DATASOURCE_USERNAME:postgres}
-#    password: ${SPRING_DATASOURCE_PASSWORD:2007}
-#    driver-class-name: ${SPRING_DATASOURCE_DRIVER:org.postgresql.Driver}
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+    url: jdbc:postgresql://dpg-d933smlaeets73b2gb00-a.virginia-postgres.render.com:5432/lodgix_db
+    username: lodgix_db_user
+    password: 6fJg2OzywqEXqTFbBCrybTJGjeqYZLDp
+    driver-class-name: org.postgresql.Driver
+  main:
+    allow-circular-references: true
+  mail:
+    host: ${SPRING_MAIL_HOST:smtp.gmail.com}
+    port: ${SPRING_MAIL_PORT:587}
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   jpa:
     hibernate:
       ddl-auto: update 
     show-sql: true
     properties:
       hibernate:
+        # Note: Hibernate 6+ autodetects the dialect; if you get warnings, remove this line
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     defer-datasource-initialization: true
@@ -39,12 +43,12 @@ bookingcom:
     affiliate-id: ${BOOKING_COM_AFFILIATE_ID:YOUR_AFFILIATE_ID}
     token: ${BOOKING_COM_TOKEN:YOUR_API_TOKEN}
 
-server:
-  port: 8081
-
 logging:
   file:
     name: backend.log
   level:
     com.terrarent: DEBUG
-    org.springframework.security: INFO
+    org.springframework.security: DEBUG
+
+server:
+  port: ${PORT:8081}

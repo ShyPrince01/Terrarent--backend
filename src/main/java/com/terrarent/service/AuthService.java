@@ -139,7 +139,7 @@ public class AuthService {
             throw new CustomAuthenticationException("Invalid verification code.");
         }
 
-        user.setStatus(User.UserStatus.ACTIVE); // Or VERIFIED, depending on your enum
+        user.setStatus(User.UserStatus.VERIFIED); // Changed from ACTIVE to VERIFIED
         userRepository.save(user);
         verificationCodes.remove(request.getEmail()); // Remove code after successful verification
     }

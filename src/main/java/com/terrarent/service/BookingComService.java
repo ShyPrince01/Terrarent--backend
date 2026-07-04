@@ -115,7 +115,7 @@ public class BookingComService {
                                         .email(systemEmail)
                                         .password("SystemPasswordNonInteractive123!") // Mock system password
                                         .phoneNumber("+2340000000")
-                                        .status(User.UserStatus.ACTIVE)
+                                        .status(User.UserStatus.VERIFIED)
                                         .role(landlordRole)
                                         .build();
                                 return userRepository.save(newLandlord);
