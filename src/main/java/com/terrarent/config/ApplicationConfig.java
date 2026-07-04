@@ -11,6 +11,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.terrarent.security.TerraRentUserDetails;
 
@@ -19,7 +20,6 @@ import com.terrarent.security.TerraRentUserDetails;
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -29,11 +29,16 @@ public class ApplicationConfig {
     }
 
     @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
     public AuthenticationProvider authenticationProvider(@Lazy UserDetailsService userDetailsService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         // Use the injected lazy userDetailsService, NOT the method call
         authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder);
+        authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
