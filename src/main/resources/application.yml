@@ -6,10 +6,8 @@ spring:
     username: lodgix_db_user
     password: 6fJg2OzywqEXqTFbBCrybTJGjeqYZLDp
     driver-class-name: org.postgresql.Driver
-   
   main:
     allow-circular-references: true
-
   mail:
     host: ${SPRING_MAIL_HOST:smtp.gmail.com}
     port: ${SPRING_MAIL_PORT:587}
@@ -21,15 +19,13 @@ spring:
           auth: true
           starttls:
             enable: true
-    
-
-
   jpa:
     hibernate:
       ddl-auto: update 
     show-sql: true
     properties:
       hibernate:
+        # Note: Hibernate 6+ autodetects the dialect; if you get warnings, remove this line
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     defer-datasource-initialization: true
@@ -47,13 +43,12 @@ bookingcom:
     affiliate-id: ${BOOKING_COM_AFFILIATE_ID:YOUR_AFFILIATE_ID}
     token: ${BOOKING_COM_TOKEN:YOUR_API_TOKEN}
 
-# Merged logging block
 logging:
   file:
     name: backend.log
   level:
     com.terrarent: DEBUG
-    org.springframework.security: DEBUG # Merged from your previous security debug level
+    org.springframework.security: DEBUG
 
 server:
-  port: 8081
+  port: ${PORT:8081}
