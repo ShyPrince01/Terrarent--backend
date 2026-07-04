@@ -19,6 +19,9 @@ spring:
           auth: true
           starttls:
             enable: true
+            required: true
+          ssl:
+            trust: ${SPRING_MAIL_HOST}
   jpa:
     hibernate:
       ddl-auto: update 
