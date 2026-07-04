@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,13 +23,13 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+    private final @Lazy UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
         String path = request.getServletPath();
@@ -47,13 +48,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-       final String jwt = authHeader.substring(7);
+        final String jwt = authHeader.substring(7);
         if (jwt.isEmpty() || jwt.split("\\.").length != 3) {
             filterChain.doFilter(request, response);
             return;
         }
 
-//        String userEmail = jwtService.extractUsername(jwt);
         String userEmail;
         try {
             userEmail = jwtService.extractUsername(jwt);
@@ -76,7 +76,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                         );
                 System.out.println("Authorities: " + userDetails.getAuthorities());
-
 
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
