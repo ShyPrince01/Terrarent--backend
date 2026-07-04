@@ -87,7 +87,6 @@ public class BookingComService {
                 ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
                 return response.getBody();
             } catch (Exception e) {
-                // If external lookup fails, fall through to fallback
             }
         }
 

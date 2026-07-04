@@ -19,6 +19,12 @@ spring:
           auth: true
           starttls:
             enable: true
+            required: true
+          ssl:
+            trust: ${SPRING_MAIL_HOST:smtp.gmail.com}
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
   jpa:
     hibernate:
       ddl-auto: update 

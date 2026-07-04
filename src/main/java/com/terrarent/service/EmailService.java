@@ -30,8 +30,8 @@ public class EmailService {
             mailSender.send(message);
             log.info("Email sent successfully!");
         } catch (Exception e) {
-            log.error("Failed to send email", e);
-            throw new RuntimeException("Could not send verification email");
+            log.error("Failed to send verification email to {}", recipientEmail, e);
+            throw new RuntimeException("Could not send verification email: " + e.getMessage(), e);
         }
     }
 }
