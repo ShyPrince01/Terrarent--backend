@@ -5,7 +5,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.impl.DefaultClaims;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -103,7 +102,7 @@ public class JwtService {
                 ObjectMapper mapper = new ObjectMapper();
                 @SuppressWarnings("unchecked")
                 java.util.Map<String, Object> map = mapper.readValue(decoded, java.util.Map.class);
-                return new DefaultClaims(map);
+                return Jwts.claims(map);
             } catch (Exception ex) {
                 throw new RuntimeException("Failed to parse JWT claims insecurely", ex);
             }
