@@ -39,7 +39,7 @@ spring:
 application:
   security:
     jwt:
-      secret-key: ${JWT_SECRET_KEY:aSuperSecretKeyForTerraRentApplicationWhichIsLongEnoughForHS256Algorithm}
+      secret-key: ${JWT_SECRET:aSuperSecretKeyForTerraRentApplicationWhichIsLongEnoughForHS256Algorithm}
       access-token-expiration: 7200000 
       refresh-token-expiration: 604800000 
 

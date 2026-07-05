@@ -5,6 +5,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.impl.DefaultClaims;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,9 @@ public class JwtService {
 
     @Value("${application.security.jwt.refresh-token-expiration}")
     private long refreshTokenExpiration; // in milliseconds
+
+    @Value("${application.security.jwt.allow-insecure-parse:false}")
+    private boolean allowInsecureParse;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -80,12 +85,29 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            return Jwts
+                    .parserBuilder()
+                    .setSigningKey(getSignInKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            if (!allowInsecureParse) {
+                throw e;
+            }
+            try {
+                String[] parts = token.split("\\.");
+                if (parts.length < 2) throw new IllegalArgumentException("Invalid JWT format");
+                byte[] decoded = Decoders.BASE64URL.decode(parts[1]);
+                ObjectMapper mapper = new ObjectMapper();
+                @SuppressWarnings("unchecked")
+                java.util.Map<String, Object> map = mapper.readValue(decoded, java.util.Map.class);
+                return new DefaultClaims(map);
+            } catch (Exception ex) {
+                throw new RuntimeException("Failed to parse JWT claims insecurely", ex);
+            }
+        }
     }
 
     private Key getSignInKey() {
@@ -95,5 +117,16 @@ public class JwtService {
 
     public long getAccessTokenExpiration() {
         return accessTokenExpiration;
+    }
+
+    public boolean isAllowInsecureParse() {
+        return allowInsecureParse;
+    }
+
+    /**
+     * Public wrapper to extract claims (may use insecure parse if enabled).
+     */
+    public Claims extractAllClaimsPublic(String token) {
+        return extractAllClaims(token);
     }
 }

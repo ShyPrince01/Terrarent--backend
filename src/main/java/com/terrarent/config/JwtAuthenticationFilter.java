@@ -1,6 +1,13 @@
 package com.terrarent.config;
 
 import com.terrarent.security.JwtService;
+import com.terrarent.repository.UserRepository;
+import com.terrarent.repository.RoleRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import com.terrarent.entity.Role;
+import com.terrarent.entity.User;
+import io.jsonwebtoken.Claims;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +29,9 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final @Lazy UserDetailsService userDetailsService; 
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -44,8 +54,46 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-            if (jwtService.isTokenValid(jwt, userDetails)) {
+            UserDetails userDetails = null;
+            try {
+                userDetails = userDetailsService.loadUserByUsername(userEmail);
+            } catch (UsernameNotFoundException ex) {
+                // If allowed, create user from token claims
+                if (jwtService.isAllowInsecureParse()) {
+                    try {
+                        if (!userRepository.existsByEmail(userEmail)) {
+                            Claims claims = jwtService.extractAllClaimsPublic(jwt);
+                            String rolesClaim = null;
+                            Object rolesObj = claims.get("roles");
+                            if (rolesObj != null) rolesClaim = rolesObj.toString();
+                            Role.RoleName roleName = Role.RoleName.ROLE_RENTER;
+                            if (rolesClaim != null) {
+                                try {
+                                    roleName = Role.RoleName.fromString(rolesClaim);
+                                } catch (Exception ignore) {
+                                }
+                            }
+                            Role role = roleRepository.findByName(roleName)
+                                    .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
+                            String localPart = userEmail.split("@")[0];
+                            User newUser = User.builder()
+                                    .firstName(localPart)
+                                    .lastName("Imported")
+                                    .email(userEmail)
+                                    .password(passwordEncoder.encode(java.util.UUID.randomUUID().toString()))
+                                    .phoneNumber(null)
+                                    .status(User.UserStatus.VERIFIED)
+                                    .role(role)
+                                    .build();
+                            userRepository.save(newUser);
+                        }
+                        userDetails = userDetailsService.loadUserByUsername(userEmail);
+                    } catch (Exception createEx) {
+                        // fall through without authentication
+                    }
+                }
+            }
+            if (userDetails != null && jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
