@@ -73,8 +73,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                 } catch (Exception ignore) {
                                 }
                             }
-                            Role role = roleRepository.findByName(roleName)
-                                    .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
+                            final Role.RoleName resolvedRoleName = roleName;
+                            Role role = roleRepository.findByName(resolvedRoleName)
+                                    .orElseThrow(() -> new RuntimeException("Role not found: " + resolvedRoleName));
                             String localPart = userEmail.split("@")[0];
                             User newUser = User.builder()
                                     .firstName(localPart)
