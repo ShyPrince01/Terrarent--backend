@@ -1,6 +1,7 @@
 package com.terrarent.service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,15 +30,24 @@ public class LandlordService {
     private final PropertyService propertyService; // Reuse propertyService for mapping
 
     public LandlordDashboardResponse getLandlordDashboardMetrics(UUID landlordId) {
-        long totalProperties = propertyRepository.findByLandlordId(landlordId).size();
-        long activeListings = propertyRepository.findByLandlordId(landlordId).stream()
+        List<Property> landlordProperties = propertyRepository.findByLandlordId(landlordId);
+        long totalProperties = landlordProperties.size();
+        long activeListings = landlordProperties.stream()
                 .filter(p -> p.getStatus() == Property.PropertyStatus.LIVE)
                 .count();
 
-        // Placeholder for revenue and occupancy calculation
-        // This would require more complex logic involving bookings and payments
-        BigDecimal totalRevenue = BigDecimal.ZERO;
+        List<Booking> bookings = bookingRepository.findByPropertyLandlordId(landlordId);
+        BigDecimal totalRevenue = bookings.stream()
+                .map(Booking::getProperty)
+                .filter(property -> property != null && property.getNightlyPrice() != null)
+                .map(Property::getNightlyPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
         BigDecimal occupancyRate = BigDecimal.ZERO;
+        if (totalProperties > 0) {
+            occupancyRate = BigDecimal.valueOf(bookings.size())
+                    .divide(BigDecimal.valueOf(totalProperties), 2, RoundingMode.HALF_UP);
+        }
 
         return LandlordDashboardResponse.builder()
                 .totalProperties(totalProperties)

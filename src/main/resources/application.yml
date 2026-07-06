@@ -49,6 +49,12 @@ bookingcom:
     affiliate-id: ${BOOKING_COM_AFFILIATE_ID:YOUR_AFFILIATE_ID}
     token: ${BOOKING_COM_TOKEN:YOUR_API_TOKEN}
 
+gemini:
+  api:
+    base-url: ${GEMINI_API_BASE_URL:}
+    key: ${GEMINI_API_KEY:}
+    model: ${GEMINI_API_MODEL:gemini-1.0}
+
 logging:
   file:
     name: backend.log

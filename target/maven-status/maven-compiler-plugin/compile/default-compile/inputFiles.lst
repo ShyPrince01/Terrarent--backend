@@ -6,6 +6,7 @@ C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\config\J
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\exception\ResourceNotFoundException.java
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\repository\FavoriteRepository.java
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\service\UserService.java
+C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\controller\AiAssistantController.java
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\service\EmailService.java
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\service\MessageService.java
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\controller\AuthController.java
@@ -17,6 +18,7 @@ C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\service\
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\dto\admin\AdminDashboardResponse.java
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\dto\landlord\PricingUpdateRequest.java
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\dto\booking\BookingResponse.java
+C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\dto\ai\AiAssistantRequest.java
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\service\ConversationService.java
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\repository\VerificationRepository.java
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\config\WebConfig.java
@@ -83,6 +85,7 @@ C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\entity\A
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\security\TerraRentUserDetails.java
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\config\SecurityConfig.java
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\dto\renter\TourRequest.java
+C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\service\AiAssistantService.java
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\TerraRentApplication.java
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\entity\FeaturedProperty.java
 C:\Users\Bamidele\Desktop\terrarent-backend\src\main\java\com\terrarent\dto\admin\PropertyStatusUpdateRequest.java

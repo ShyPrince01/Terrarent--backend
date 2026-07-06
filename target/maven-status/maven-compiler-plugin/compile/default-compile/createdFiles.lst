@@ -34,7 +34,9 @@ com\terrarent\entity\Application$ApplicationBuilder.class
 com\terrarent\controller\AuthController.class
 com\terrarent\dto\booking\BookingResponse.class
 com\terrarent\service\LandlordService.class
+com\terrarent\dto\ai\AiAssistantRequest$AiAssistantRequestBuilder.class
 com\terrarent\repository\NegotiationRepository.class
+com\terrarent\controller\AiAssistantController.class
 com\terrarent\controller\UserController.class
 com\terrarent\controller\MessageController.class
 com\terrarent\dto\renter\NegotiationRequest$NegotiationRequestBuilder.class
@@ -59,6 +61,7 @@ com\terrarent\dto\renter\NegotiationRequest.class
 com\terrarent\repository\MessageRepository.class
 com\terrarent\config\SecurityConfig.class
 com\terrarent\entity\Application.class
+com\terrarent\dto\ai\AiAssistantRequest.class
 com\terrarent\config\DatabaseConfig.class
 com\terrarent\entity\Verification.class
 com\terrarent\dto\review\CreateReviewRequest.class
@@ -68,6 +71,7 @@ com\terrarent\entity\Message.class
 com\terrarent\dto\auth\LoginRequest$LoginRequestBuilder.class
 com\terrarent\config\AdminSeeder.class
 com\terrarent\entity\Favorite$FavoriteBuilder.class
+com\terrarent\service\AiAssistantService.class
 com\terrarent\dto\auth\ResendVerificationRequest$ResendVerificationRequestBuilder.class
 com\terrarent\dto\auth\AuthResponse$AuthResponseBuilder.class
 com\terrarent\config\ApplicationConfig.class
