@@ -51,8 +51,8 @@ bookingcom:
 
 gemini:
   api:
-    base-url: ${GEMINI_API_BASE_URL:}
-    key: ${GEMINI_API_KEY:}
+    base-url: ${GEMINI_API_BASE_URL}
+    key: ${GEMINI_API_KEY}
     model: ${GEMINI_API_MODEL:gemini-1.0}
 
 logging:
