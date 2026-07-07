@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terrarent-app
+  labels:
+    app: terrarent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: terrarent
+  template:
+    metadata:
+      labels:
+        app: terrarent
+    spec:
+      containers:
+      - name: terrarent
+        image: John053/terrarent:v1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:postgresql://dpg-d933smlaeets73b2gb00-a.virginia-postgres.render.com:5432/lodgix_db"
+        - name: SPRING_MAIL_USERNAME
+          value: "tgaza879@gmail.com"
+        - name: SPRING_MAIL_PASSWORD
+          value: "6fJg2OzywqEXqTFbBCrybTJGjeqYZLDp"

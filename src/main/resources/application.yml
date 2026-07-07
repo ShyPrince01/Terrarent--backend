@@ -31,7 +31,6 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        # Note: Hibernate 6+ autodetects the dialect; if you get warnings, remove this line
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     defer-datasource-initialization: true
