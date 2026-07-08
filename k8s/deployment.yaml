@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: terrarent
-        image: John053/terrarent:v1
+        image: john0553/terrarent:v1 
         ports:
         - containerPort: 8080
         env:
